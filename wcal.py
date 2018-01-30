@@ -36,6 +36,13 @@ CALENDAR = open(WHEN_FILE, "r")
 REGEX = "^([0-9]{4})\s([a-z]{3})\s([0-9]{1,2})\s,\s([0-9]{1,2}):([0-9]{2})(a|p)\s-\s([0-9]{1,2}):([0-9]{2})(a|p)\s(.*)$"
 NOW = datetime.datetime.now()
 ICAL_DTSTAMP = NOW.strftime("%Y%m%dT%H%M%S")
+ICAL_PRODID = "-//wcal//wcal//EN"
+
+print "BEGIN:VCALENDAR"
+print "VERSION:2.0"
+print "PRODID:" + ICAL_PRODID
+print "CALSCALE:GREGORIAN"
+print "METHOD:PUBLISH"
 
 for event in CALENDAR:
     if event.startswith("#", 0, 1):
@@ -45,6 +52,7 @@ for event in CALENDAR:
     else:
         EVENT_LIST = re.split(REGEX, event.rstrip())
         if len(EVENT_LIST) > 1:
+            print "BEGIN:VEVENT"
             ICAL_UID = hashlib.sha256(event).hexdigest()
             if EVENT_LIST[6] == "p":
                 DTSTART_HOUR = str(int(EVENT_LIST[4]) + 12)
@@ -64,8 +72,11 @@ for event in CALENDAR:
                          DTEND_HOUR.zfill(2) + \
                          EVENT_LIST[8] + \
                          "00"
-            print EVENT_LIST
             print "DTSTAMP:" + ICAL_DTSTAMP
             print "UID:" + ICAL_UID
             print "DTSTART:" + ICAL_DTSTART
             print "DTEND:" + ICAL_DTEND
+            print "SUMMARY:" + EVENT_LIST[10]
+            print "END:VEVENT"
+
+print "END:VCALENDAR"
