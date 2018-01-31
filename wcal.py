@@ -33,11 +33,10 @@ def get_month_index(month):
 WHEN_FILE = '/Users/bmcnab/.when/calendar'
 
 CALENDAR = open(WHEN_FILE, "r")
-REGEX = "^([0-9]{4})\s([a-z]{3})\s([0-9]{1,2})\s,\s([0-9]{1,2}):([0-9]{2})(a|p)\s-\s([0-9]{1,2}):([0-9]{2})(a|p)\s(.*)$"
 REGEX = "^([0-9]{4})\s([a-z]{3})\s([0-9]{1,2})\s,(\s([0-9]{1,2}):([0-9]{2})(a|p)(\s-\s([0-9]{1,2}):([0-9]{2})(a|p)){0,1}){0,1}\s(.*)"
 NOW = datetime.datetime.now()
 ICAL_DTSTAMP = NOW.strftime("%Y%m%dT%H%M%S")
-ICAL_PRODID = "-//wcal//wcal//EN"
+ICAL_PRODID = "wcal"
 
 print "BEGIN:VCALENDAR"
 print "VERSION:2.0"
